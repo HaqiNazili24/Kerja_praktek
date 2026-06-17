@@ -80,4 +80,4 @@ class ProductController extends Controller
             'image'           => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
     }
-}
+}   

@@ -14,7 +14,7 @@ class ReportController extends Controller
     {
         [$orders, $filters] = $this->buildQuery($request);
         $totalOrders = $orders->count();
-        $totalRevenue = $orders->sum('total');
+        $totalRevenue = $orders->whereIn('status', ['pembayaran_dikonfirmasi', 'diproses', 'dikirim', 'selesai'])->sum('total');
         $categories = Category::orderBy('name')->get();
         $statuses = Order::STATUSES;
         return view('admin.reports.index', compact('orders', 'totalOrders', 'totalRevenue', 'categories', 'statuses', 'filters'));
@@ -24,7 +24,7 @@ class ReportController extends Controller
     {
         [$orders, $filters] = $this->buildQuery($request);
         $totalOrders = $orders->count();
-        $totalRevenue = $orders->sum('total');
+        $totalRevenue = $orders->whereIn('status', ['pembayaran_dikonfirmasi', 'diproses', 'dikirim', 'selesai'])->sum('total');
         $pdf = Pdf::loadView('admin.reports.pdf', [
             'orders' => $orders, 'totalOrders' => $totalOrders,
             'totalRevenue' => $totalRevenue, 'filters' => $filters,

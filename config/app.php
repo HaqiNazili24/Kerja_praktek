@@ -18,8 +18,8 @@ return [
     'store' => [
         'name' => env('STORE_NAME', 'Toko Beras Jagat Nusantara'),
         'bank_name' => env('STORE_BANK_NAME', 'Bank BCA'),
-        'bank_account' => env('STORE_BANK_ACCOUNT', '1234567890'),
-        'bank_holder' => env('STORE_BANK_HOLDER', 'Toko Beras Jagat Nusantara'),
-        'shipping_flat_rate' => (int) env('SHIPPING_FLAT_RATE', 15000),
+        'bank_account' => env('STORE_BANK_ACCOUNT', '7112578865'),
+        'bank_holder' => env('STORE_BANK_HOLDER', 'Rifki Maulana'),
+        'shipping_flat_rate' => (int) env('SHIPPING_FLAT_RATE', 10000),
     ],
 ];

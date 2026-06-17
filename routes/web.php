@@ -43,7 +43,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('categories', Admin\CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('sub-categories', Admin\SubCategoryController::class)->only(['index', 'store', 'update', 'destroy'])->parameters(['sub-categories' => 'subCategory']);
     Route::resource('products', Admin\ProductController::class)->except(['show']);
-    Route::delete('product-images/{image}', [Admin\ProductController::class, 'deleteImage'])->name('products.delete-image');
 
     Route::get('orders', [Admin\OrderController::class, 'index'])->name('orders.index');
     Route::get('orders/{order}', [Admin\OrderController::class, 'show'])->name('orders.show');

@@ -1,31 +1,95 @@
 @extends('layouts.admin')
 @section('page-title','Produk')
 @section('content')
-<div class="d-flex justify-content-between mb-3">
-    <h5 class="mb-0">Daftar Produk</h5>
-    <a href="{{ route('admin.products.create') }}" class="btn btn-tb-primary"><i class="bi bi-plus"></i> Produk Baru</a>
+
+{{-- Header bar --}}
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h6 class="fw-bold mb-0">Daftar Produk</h6>
+        <small class="text-muted">Kelola semua produk yang tersedia di toko.</small>
+    </div>
+    <a href="{{ route('admin.products.create') }}" class="btn btn-tb-primary">
+        <i class="bi bi-plus-lg me-1"></i> Produk Baru
+    </a>
 </div>
-<div class="card border-0 shadow-sm"><div class="card-body p-0">
-    <table class="table align-middle mb-0">
-        <thead class="bg-light"><tr><th></th><th>Nama</th><th>Kategori</th><th>Harga</th><th>Stok</th><th>Aktif</th><th></th></tr></thead>
-        <tbody>
-            @forelse($products as $p)
-            <tr>
-                <td><img src="{{ $p->primary_image_url }}" width="48" height="48" class="rounded" style="object-fit:cover;"></td>
-                <td><strong>{{ $p->name }}</strong><br><small class="text-muted">{{ $p->weight_label }}</small></td>
-                <td><small>{{ $p->subCategory->category->name }} / {{ $p->subCategory->name }}</small></td>
-                <td>Rp {{ number_format($p->price,0,',','.') }}</td>
-                <td>{{ $p->stock }}</td>
-                <td>@if($p->is_active)<span class="badge bg-success">Aktif</span>@else<span class="badge bg-secondary">Nonaktif</span>@endif</td>
-                <td>
-                    <a href="{{ route('admin.products.edit',$p) }}" class="btn btn-sm btn-tb-outline"><i class="bi bi-pencil"></i></a>
-                    <form action="{{ route('admin.products.destroy',$p) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus produk?')">@csrf @method('DELETE')
-                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button></form>
-                </td>
-            </tr>
-            @empty <tr><td colspan="7" class="text-center py-4 text-muted">Belum ada produk.</td></tr> @endforelse
-        </tbody>
-    </table>
-</div></div>
-<div class="mt-3">{{ $products->links() }}</div>
+
+<div class="card">
+    <div class="table-responsive">
+        <table class="table admin-table mb-0 align-middle">
+            <thead>
+                <tr>
+                    <th style="width:64px;"></th>
+                    <th>Nama Produk</th>
+                    <th>Kategori</th>
+                    <th>Harga</th>
+                    <th class="text-center">Stok</th>
+                    <th class="text-center">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($products as $p)
+                <tr>
+                    <td>
+                        <img src="{{ $p->primary_image_url }}"
+                             width="48" height="48"
+                             class="rounded-3"
+                             style="object-fit:cover;"
+                             onerror="this.src='https://placehold.co/48x48/e8f5e9/2D5016?text=B'">
+                    </td>
+                    <td>
+                        <span class="fw-semibold d-block">{{ $p->name }}</span>
+                        <small class="text-muted">{{ $p->weight_label }}</small>
+                    </td>
+                    <td>
+                        <span class="text-muted small">{{ $p->subCategory->category->name }}</span><br>
+                        <span class="admin-badge bg-primary" style="font-size:11px;">{{ $p->subCategory->name }}</span>
+                    </td>
+                    <td class="fw-semibold">Rp {{ number_format($p->price,0,',','.') }}</td>
+                    <td class="text-center">
+                        @if($p->stock <= 5)
+                            <span class="admin-badge bg-danger">{{ $p->stock }}</span>
+                        @elseif($p->stock <= 20)
+                            <span class="admin-badge bg-warning">{{ $p->stock }}</span>
+                        @else
+                            <span class="admin-badge bg-success">{{ $p->stock }}</span>
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        @if($p->is_active)
+                            <span class="admin-badge bg-success"><i class="bi bi-check-circle me-1"></i>Aktif</span>
+                        @else
+                            <span class="admin-badge bg-secondary"><i class="bi bi-pause-circle me-1"></i>Nonaktif</span>
+                        @endif
+                    </td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <a href="{{ route('admin.products.edit',$p) }}" class="btn btn-sm btn-tb-outline" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form action="{{ route('admin.products.destroy',$p) }}" method="POST" onsubmit="return confirm('Hapus produk ini?')">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-sm btn-outline-danger" title="Hapus">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <i class="bi bi-box-seam fs-2 d-block mb-2 opacity-25"></i>
+                        Belum ada produk. <a href="{{ route('admin.products.create') }}" class="text-tb-green">Tambah sekarang</a>
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+    @if($products->hasPages())
+    <div class="card-body pt-2">{{ $products->links() }}</div>
+    @endif
+</div>
+
 @endsection

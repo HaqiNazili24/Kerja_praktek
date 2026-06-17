@@ -30,17 +30,28 @@ class CheckoutController extends Controller
         $data = $request->validate([
             'address_id' => ['nullable', 'exists:addresses,id'],
             'recipient_name' => ['required_without:address_id', 'nullable', 'string', 'max:255'],
-            'phone' => ['required_without:address_id', 'nullable', 'string', 'max:20'],
+            'phone' => ['required_without:address_id', 'nullable', 'numeric', 'digits_between:10,15'],
             'full_address' => ['required_without:address_id', 'nullable', 'string'],
             'city' => ['required_without:address_id', 'nullable', 'string', 'max:100'],
             'province' => ['required_without:address_id', 'nullable', 'string', 'max:100'],
             'postal_code' => ['required_without:address_id', 'nullable', 'string', 'max:10'],
             'save_address' => ['nullable'],
+            'payment_method' => ['required', 'in:transfer,cod'],
         ]);
 
         $userId = auth()->id();
         $items = Cart::with('product')->where('user_id', $userId)->get();
         if ($items->isEmpty()) return redirect()->route('cart.index')->with('error', 'Keranjang kosong.');
+
+        // Validasi ketersediaan stok sebelum membuat pesanan
+        foreach ($items as $item) {
+            if (! $item->product || ! $item->product->is_active) {
+                return redirect()->route('cart.index')->with('error', "Produk \"{$item->product?->name}\" sudah tidak tersedia. Silakan hapus dari keranjang.");
+            }
+            if ($item->quantity > $item->product->stock) {
+                return redirect()->route('cart.index')->with('error', "Stok \"{$item->product->name}\" tidak mencukupi (tersisa {$item->product->stock}).");
+            }
+        }
 
         $address = null;
         if (! empty($data['address_id'])) {
@@ -57,9 +68,14 @@ class CheckoutController extends Controller
             }
         }
 
-        $order = DB::transaction(function () use ($items, $userId, $address, $data) {
+        $paymentMethod = $data['payment_method'];
+
+        $order = DB::transaction(function () use ($items, $userId, $address, $data, $paymentMethod) {
             $subtotal = $items->sum(fn($i) => $i->subtotal);
             $shipping = (int) config('app.store.shipping_flat_rate');
+
+            // COD langsung masuk status 'diproses', transfer harus upload bukti dulu
+            $initialStatus = $paymentMethod === 'cod' ? 'diproses' : 'menunggu_pembayaran';
 
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
@@ -74,7 +90,8 @@ class CheckoutController extends Controller
                 'subtotal' => $subtotal,
                 'shipping_cost' => $shipping,
                 'total' => $subtotal + $shipping,
-                'status' => 'menunggu_pembayaran',
+                'payment_method' => $paymentMethod,
+                'status' => $initialStatus,
             ]);
 
             foreach ($items as $it) {
@@ -92,6 +109,10 @@ class CheckoutController extends Controller
             return $order;
         });
 
-        return redirect()->route('orders.show', $order)->with('success', 'Pesanan dibuat. Silakan upload bukti pembayaran.');
+        $message = $paymentMethod === 'cod'
+            ? 'Pesanan dibuat dengan metode COD. Siapkan pembayaran saat barang diterima.'
+            : 'Pesanan dibuat. Silakan upload bukti pembayaran.';
+
+        return redirect()->route('orders.show', $order)->with('success', $message);
     }
 }

@@ -33,6 +33,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        if ($category->subCategories()->exists()) {
+            return back()->with('error', 'Kategori tidak dapat dihapus karena masih memiliki sub kategori.');
+        }
         $category->delete();
         return back()->with('success', 'Kategori dihapus.');
     }

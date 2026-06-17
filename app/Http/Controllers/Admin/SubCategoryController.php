@@ -40,6 +40,9 @@ class SubCategoryController extends Controller
 
     public function destroy(SubCategory $subCategory)
     {
+        if ($subCategory->products()->exists()) {
+            return back()->with('error', 'Sub kategori tidak dapat dihapus karena masih memiliki produk.');
+        }
         $subCategory->delete();
         return back()->with('success', 'Sub kategori dihapus.');
     }

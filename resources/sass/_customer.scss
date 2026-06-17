@@ -1,0 +1,771 @@
+// ================================================
+// CUSTOMER SIDEBAR SYSTEM (cs-*)
+// ================================================
+
+$cs-sidebar-width: 260px;
+$cs-bg: #1B5E20;
+
+#csApp {
+  display: flex;
+  min-height: 100vh;
+}
+
+// Sidebar
+.cs-sidebar {
+  width: $cs-sidebar-width;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: $cs-bg;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 1050;
+  transition: width 0.3s ease, transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+// Brand
+.cs-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative; // For toggle positioning
+  min-height: 73px;
+
+  .cs-sidebar-brand-icon {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #fff;
+    flex-shrink: 0;
+
+    .cs-logo {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+  }
+
+  .cs-sidebar-brand-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .cs-sidebar-brand-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cs-sidebar-brand-sub {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cs-sidebar-close {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 20px;
+    padding: 0;
+    cursor: pointer;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s ease;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+
+    &:active {
+      transform: scale(0.9);
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+}
+
+// Nav
+.cs-nav {
+  flex: 1;
+  padding: 10px 8px;
+  overflow-y: auto;
+}
+
+.cs-nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.35);
+  padding: 12px 10px 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cs-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  text-decoration: none !important;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  margin-bottom: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  &.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-weight: 600;
+    border-left: 3px solid #F9A825;
+    padding-left: 7px;
+  }
+}
+
+.cs-nav-sub {
+  padding-left: 20px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.50);
+}
+
+.cs-nav-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.cs-nav-badge {
+  margin-left: auto;
+  background: #F9A825;
+  color: #1B5E20;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 50px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cs-nav-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 10px 6px;
+}
+
+// Sidebar Footer
+.cs-sidebar-footer {
+  padding: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.10);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.cs-sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.cs-sidebar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.cs-sidebar-username {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.cs-sidebar-userrole {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+// Main content
+.cs-main {
+  margin-left: $cs-sidebar-width;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 0.3s ease;
+  overflow: hidden;
+  min-width: 0;
+}
+
+// Desktop search bar
+.cs-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: #fff;
+  border-bottom: 1px solid #f0ede8;
+  box-shadow: var(--shadow-navbar);
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cs-search-form {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  background: #F5F3EE;
+  border-radius: 50px;
+  padding: 6px 16px;
+  gap: 8px;
+}
+
+.cs-search-icon {
+  color: rgba(0, 0, 0, 0.40);
+  font-size: 15px;
+  flex-shrink: 0;
+}
+
+.cs-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.87);
+  outline: none;
+
+  &::placeholder {
+    color: rgba(0, 0, 0, 0.40);
+  }
+}
+
+.cs-search-btn {
+  padding: 5px 16px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.cs-search-cart {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #F5F3EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: rgba(0, 0, 0, 0.60);
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+
+  &:hover {
+    background: #ebe8e2;
+    color: var(--color-primary);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+.cs-search-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.70);
+  flex-shrink: 0;
+}
+
+.cs-search-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+// Mobile header wrapper (Sticky)
+.cs-mobile-header-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  box-shadow: var(--shadow-navbar);
+}
+
+// Mobile topbar
+.cs-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  height: 60px;
+  background: #fff;
+}
+
+// Shared topbar action button base
+.cs-topbar-action {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #F5F3EE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+  color: rgba(0, 0, 0, 0.60);
+  font-size: 18px;
+  position: relative;
+
+  &:hover {
+    background: #ebe8e2;
+    color: rgba(0, 0, 0, 0.85);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  &.is-active {
+    background: var(--color-primary);
+    color: #fff;
+
+    &:hover {
+      background: var(--color-primary-dark);
+      color: #fff;
+    }
+  }
+}
+
+.cs-topbar-burger {
+  @extend .cs-topbar-action;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.70);
+}
+
+.cs-topbar-brand {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-primary) !important;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .cs-topbar-logo {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.cs-topbar-icon {
+  @extend .cs-topbar-action;
+}
+
+.cs-topbar-search-toggle {
+  @extend .cs-topbar-action;
+  font-size: 16px;
+}
+
+// Mobile search (collapsible in topbar)
+.cs-mobile-search {
+  display: none;
+  padding: 0 12px 10px;
+  background: #fff;
+  border-bottom: 1px solid #f0ede8;
+  animation: csSearchSlideDown 0.2s ease;
+
+  &.is-open {
+    display: block;
+  }
+
+  .cs-mobile-search-form {
+    display: flex;
+    align-items: center;
+    background: #F5F3EE;
+    border-radius: 12px;
+    padding: 8px 14px;
+    gap: 10px;
+    border: 1.5px solid transparent;
+    transition: border-color 0.15s ease;
+
+    &:focus-within {
+      border-color: var(--color-primary-accent);
+      background: #fff;
+    }
+  }
+
+  .cs-mobile-search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+    outline: none;
+    min-width: 0;
+
+    &::placeholder {
+      color: rgba(0, 0, 0, 0.40);
+    }
+  }
+
+  .cs-mobile-search-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--color-primary);
+    border: none;
+    color: #fff;
+    font-size: 15px;
+    padding: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, transform 0.1s ease;
+
+    &:hover {
+      background: var(--color-primary-dark);
+    }
+
+    &:active {
+      transform: scale(0.92);
+    }
+  }
+}
+
+@keyframes csSearchSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Content area
+.cs-content {
+  flex: 1;
+  padding: 24px;
+  padding-bottom: 80px; // Clearance for WA bubble
+
+  @media (max-width: 991.98px) {
+    padding: 16px;
+    padding-bottom: 80px;
+  }
+}
+
+// Footer
+.cs-footer {
+  background-color: #1B5E20;
+  color: rgba(255, 255, 255, 0.70);
+  padding: 16px 24px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    color: #fff;
+  }
+
+  .cs-footer-inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .cs-footer-dot {
+    color: rgba(255, 255, 255, 0.30);
+  }
+}
+
+// Backdrop mobile
+.cs-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+
+  &.is-visible {
+    display: block;
+  }
+}
+
+// No scroll saat drawer terbuka
+.cs-no-scroll {
+  overflow: hidden;
+}
+
+
+
+// Hapus styling lama yang konflik
+.cs-sidebar-open, .cs-sidebar-expand {
+  display: none !important;
+}
+
+// Collapsed state
+@media (min-width: 992px) {
+  #csApp.sidebar-collapsed {
+    .cs-main {
+      margin-left: 64px;
+    }
+
+    .cs-sidebar {
+      width: 64px;
+
+      // Sembunyikan elemen teks
+      .cs-sidebar-brand-name,
+      .cs-sidebar-brand-sub,
+      .cs-nav-section-label,
+      .cs-nav-text,
+      .cs-nav-badge,
+      .cs-sidebar-footer .cs-sidebar-username,
+      .cs-sidebar-footer .cs-sidebar-userrole,
+      .cs-sidebar-footer p,
+      .cs-sidebar-footer a.cs-admin-link .cs-nav-text {
+        opacity: 0;
+        visibility: hidden;
+        width: 0;
+        height: 0;
+        padding: 0;
+        margin: 0;
+        display: none !important;
+      }
+      
+      // Sembunyikan sub nav completely
+      .cs-nav-sub {
+        display: none !important;
+      }
+
+      // Admin link in collapsed: icon only
+      .cs-admin-link {
+        width: 44px;
+        height: 44px;
+        padding: 0 !important;
+        border-radius: 8px !important;
+        justify-content: center;
+        margin: 0 auto;
+      }
+
+      // Posisikan icon di tengah
+      .cs-nav-link {
+        justify-content: center;
+        padding: 10px;
+        position: relative;
+        
+        &.active {
+          border-left: 3px solid #F9A825;
+          padding-left: 7px;
+        }
+        
+        .cs-nav-icon {
+          margin: 0;
+        }
+
+        // Tooltip on hover (desktop only)
+        &:hover::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          left: calc(100% + 12px);
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(0, 0, 0, 0.85);
+          color: #fff;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          white-space: nowrap;
+          z-index: 9999;
+          pointer-events: none;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          animation: csTooltipIn 0.15s ease;
+        }
+
+        &:hover::before {
+          content: '';
+          position: absolute;
+          left: calc(100% + 4px);
+          top: 50%;
+          transform: translateY(-50%);
+          border: 5px solid transparent;
+          border-right-color: rgba(0, 0, 0, 0.85);
+          z-index: 9999;
+          pointer-events: none;
+        }
+      }
+
+      // Tooltip for admin link button
+      .cs-admin-link {
+        position: relative;
+        &:hover::after {
+          content: attr(data-tooltip);
+          position: absolute;
+          left: calc(100% + 12px);
+          top: 50%;
+          transform: translateY(-50%);
+          background: rgba(0, 0, 0, 0.85);
+          color: #fff;
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 500;
+          white-space: nowrap;
+          z-index: 9999;
+          pointer-events: none;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+          animation: csTooltipIn 0.15s ease;
+        }
+        &:hover::before {
+          content: '';
+          position: absolute;
+          left: calc(100% + 4px);
+          top: 50%;
+          transform: translateY(-50%);
+          border: 5px solid transparent;
+          border-right-color: rgba(0, 0, 0, 0.85);
+          z-index: 9999;
+          pointer-events: none;
+        }
+      }
+
+      // Posisikan logo di header
+      .cs-sidebar-brand {
+        justify-content: center;
+        padding: 18px 0;
+      }
+
+      .cs-sidebar-brand-icon {
+        margin: 0;
+      }
+
+      // Footer
+      .cs-sidebar-footer {
+        padding: 10px 0;
+        display: flex;
+        justify-content: center;
+        .cs-sidebar-user {
+          margin: 0;
+          justify-content: center;
+        }
+        .cs-sidebar-avatar {
+          margin: 0 auto;
+        }
+        form .cs-nav-link {
+          padding: 10px 0;
+        }
+      }
+    }
+  }
+}
+
+// Tooltip animation
+@keyframes csTooltipIn {
+  from { opacity: 0; transform: translateY(-50%) translateX(-4px); }
+  to   { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+// Responsive Tablet (992px - 1199px): auto-collapse sidebar
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  // Tablet zone - JS will auto-collapse the sidebar.
+  // This ensures the collapsed state works cleanly in this range.
+}
+
+// Mobile responsive (< 992px) — matches Bootstrap `lg` breakpoint
+@media (max-width: 991.98px) {
+  .cs-sidebar {
+    transform: translateX(-100%);
+
+    &.is-open {
+      transform: translateX(0);
+    }
+    
+    .cs-sidebar-brand {
+      .cs-sidebar-toggle {
+        display: none !important;
+      }
+    }
+  }
+
+  .cs-main {
+    margin-left: 0 !important;
+  }
+}

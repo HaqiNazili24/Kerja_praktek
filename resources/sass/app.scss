@@ -1,42 +1,4 @@
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
-
-// Custom Variables
-$primary-color: #2D5016;
-$secondary-color: #8B4513;
-$cream-color: #F5F0E8;
-$warm-white: #FDFAF5;
-
-// Override Bootstrap Variables
-$primary: $primary-color;
-$body-bg: $warm-white;
-
-// Global Styles
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: $warm-white;
-}
-
-.navbar-brand {
-    font-weight: 700;
-    color: $primary-color !important;
-}
-
-.btn-primary {
-    background-color: $primary-color;
-    border-color: $primary-color;
-    
-    &:hover {
-        background-color: darken($primary-color, 10%);
-    }
-}
-
-.card {
-    border: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    transition: transform 0.2s;
-    
-    &:hover {
-        transform: translateY(-4px);
-    }
-}
+@import 'variables';
+@import 'components';
+@import 'admin';
+@import 'customer';
